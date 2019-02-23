@@ -4,13 +4,14 @@
 #define smartPin 5
 #define oneWireBus 2
 
-//String TempString="hello";  //TESTING
+
 
 
 boolean released=false;
 
 String TempString="";
 char TempChar;
+char Check;
 unsigned int TempIndex=0;
 boolean TempSend=false;
 
@@ -28,8 +29,11 @@ void setup() {
 
 void loop() {
 beacon();
+ while(Serial.available()>0)
+  {Check=Serial.read();}
 Temperature();
 CheckCut();
+Check='y';
 Serial.print('/');  //Differentiate between characters
 }
 

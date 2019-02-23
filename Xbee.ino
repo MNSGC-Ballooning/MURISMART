@@ -1,14 +1,14 @@
 
 void CheckCut(){
-  while(Serial.available()>0)
-  if (Serial.read()=='B')
+
+  if (Check=='B')
   {smart.release();
   delay(100);
    while (true)
   {Serial.print('X');
   }
+  
   }
-
 }
 
 
@@ -20,15 +20,15 @@ void beacon() {
 
 
 void Temperature() {
-while(Serial.available()>0){
-if (Serial.read()=='P'){
+
+if (Check=='P'){
     Serial.print('C');
     TempString=DallasTemp();
     TempSend=true;
     TempIndex=0;
    
 }
-}
+
 if (TempSend){
   
 
