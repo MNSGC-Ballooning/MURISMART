@@ -3,7 +3,9 @@
 
 #define smartPin 5
 #define oneWireBus 2
-
+#define batteryTempPin A1
+#define heatOn 8
+#define heatOff 9
 
 
 
@@ -21,6 +23,24 @@ unsigned long tempTimer=0;
 
 Smart smart = Smart(smartPin);
 
+////////////////Relay class////////////////
+//Class Declaration
+class Relay {
+  protected:
+    bool isOpen;
+    int onPin;
+    int offPin;
+  public:
+    Relay(int on, int off);
+    const char* getRelayStatus();
+    void init();
+    void openRelay();
+    void closeRelay();
+};
+
+//Make Relay Object
+Relay batHeatRelay(heatOn,heatOff);
+
 void setup() {
   smart.initialize();
   DallasSetup();
@@ -28,6 +48,7 @@ void setup() {
 }
 
 void loop() {
+heat();
 beacon();
  while(Serial.available()>0)
   {Check=Serial.read();}

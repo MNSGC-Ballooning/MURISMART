@@ -23,7 +23,7 @@ void Temperature() {
 
 if (Check=='P'){
     Serial.print('C');
-    TempString=DallasTemp();
+    TempString=DallasTemp()+','+ getBatteryTemp();
     TempSend=true;
     TempIndex=0;
    
