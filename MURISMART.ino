@@ -3,9 +3,10 @@
 
 #define smartPin 4
 #define oneWireBus 2
+#define twoWireBus 5
 #define batteryTempPin A1
-#define heatOn 8
-#define heatOff 9
+#define BatHeat_ON 6 
+#define BatHeat_OFF 7
 
 //UNCMOMMENT FOR A
 /*
@@ -26,8 +27,8 @@ const char TempRequest='P';
 const char TempStart='C';
 const char TempEnd='V'; 
 
-
- 
+//Initializing Latch Relays
+LatchRelay BatHeat(BatHeat_ON,BatHeat_OFF)
  
 
 boolean released=false;
@@ -43,6 +44,10 @@ boolean Sending=false;
 unsigned long CutConfirmTimer=0;
 unsigned long CutSpam=0;
 
+float t_low = 283;
+float t_high = 289;
+boolean coldBattery = false;
+
 
 Smart smart = Smart(smartPin);
 
@@ -50,14 +55,20 @@ Smart smart = Smart(smartPin);
 
 void setup() {
   smart.initialize();
+
+  BatHeat.init(false);
+  
   DallasSetup();
+  
   Serial.begin(9600);
+  
 }
 
 void loop() {
 
 if (Serial.available()>0)
  {Check=Serial.read();}
+
 
 Temperature();
 CheckCut();
@@ -69,4 +80,3 @@ Check='0'; //Zero
 }
 
   
-
