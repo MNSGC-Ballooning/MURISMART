@@ -1,35 +1,44 @@
 
 void CheckCut(){
 
-  if (Check=='B')
+  if (Check==CutRequest)
   {smart.release();
   delay(100);
-   while (true)
-  {Serial.print('X');
+  CutConfirmTimer=millis();
+   while (millis()-CutConfirmTimer<=60000)
+  {
+    if (Serial.read()!=CutAcknowledge && spam){
+      if (millis()-CutSpam>1000){
+        Serial.print(CutConfirm);
+        CutSpam=millis();
+      }
+    }
+    else{
+      spam=false;      
+    }
+  }
+  while(true)
+  {
+    smart.release(); //Otherwise will reset, and could
+    //chillax,good job
   }
   
   }
 }
 
 
-void beacon() {
-  if (millis()-beaconTimer>4000 && !TempSend){
-  Serial.print('F');
-  beaconTimer=millis();}
-}
-
 
 void Temperature() {
 
-if (Check=='P'){
-    Serial.print('C');
+if (Check==TempRequest && !TempSend){
+    Serial.print(TempStart);
     TempString=DallasTemp();
     TempSend=true;
     TempIndex=0;
    
 }
 
-if (TempSend){
+if (Sending){
   
 
   if(TempIndex<TempString.length()){  
@@ -41,35 +50,11 @@ if (TempSend){
 
   else{
     TempSend=false;
-    Serial.print('V');
+    Sending=false;
+    Serial.print(TempEnd);
   }
   
 }
 }
-   
-
- /* if (Serial.read()=='P'){
-    
-    Serial.print('C');
-    Serial.print('C');
-    //TempString=String(DallasTemp());
-    TempString="hello";
-    TempIndex=0;
-  //  delay(20);
-    while (TempIndex<TempString.length())
-    {TempChar=TempString.charAt(TempIndex);
-      Serial.print(TempChar);
-      TempIndex++;
-     // delay(10);
-    }
-  //delay(10);
-  Serial.print('V');
-  Serial.print('V');
- // Serial.print('V');
-    }
-    }
-    
-}*/
-
 
 
