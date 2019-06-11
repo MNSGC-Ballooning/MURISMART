@@ -46,23 +46,7 @@ unsigned long CutSpam=0;
 
 Smart smart = Smart(smartPin);
 
-////////////////Relay class////////////////
-//Class Declaration
-class Relay {
-  protected:
-    bool isOpen;
-    int onPin;
-    int offPin;
-  public:
-    Relay(int on, int off);
-    const char* getRelayStatus();
-    void init();
-    void openRelay();
-    void closeRelay();
-};
 
-//Make Relay Object
-Relay batHeatRelay(heatOn,heatOff);
 
 void setup() {
   smart.initialize();
@@ -71,15 +55,10 @@ void setup() {
 }
 
 void loop() {
-<<<<<<< HEAD
+
 if (Serial.available()>0)
  {Check=Serial.read();}
-=======
-heat();
-beacon();
- while(Serial.available()>0)
-  {Check=Serial.read();}
->>>>>>> 4f57ed3b7b9738aaea50b628e61d3e31a416956f
+
 Temperature();
 CheckCut();
 if (TempSend){
