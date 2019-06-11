@@ -30,9 +30,15 @@ void CheckCut(){
 
 void Temperature() {
 
+<<<<<<< HEAD
 if (Check==TempRequest && !TempSend){
     Serial.print(TempStart);
     TempString=DallasTemp();
+=======
+if (Check=='P'){
+    Serial.print('C');
+    TempString=DallasTemp()+','+ getBatteryTemp();
+>>>>>>> 4f57ed3b7b9738aaea50b628e61d3e31a416956f
     TempSend=true;
     TempIndex=0;
    
