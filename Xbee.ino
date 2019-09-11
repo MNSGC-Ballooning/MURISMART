@@ -1,35 +1,43 @@
 
 void CheckCut(){
 
-  if (Check=='B')
-  {smart.release();
-  delay(100);
-   while (true)
-  {Serial.print('X');
+  if (Check==CutRequest && spam)
+  {Release();
+  CutStatus='R';
+  //delay(100);
+  CutConfirmTimer=millis();
+   while (millis()-CutConfirmTimer<=60000 && spam)
+  {
+    if (Serial.read()!=CutAcknowledge){
+      if (millis()-CutSpam>1000){
+        //smart.release(); //Just in case
+        Serial.print(CutConfirm);
+        CutSpam=millis();
+      }
+    }
+    else{
+      spam=false;      
+    }
   }
-  
+
   }
 }
 
-
-void beacon() {
-  if (millis()-beaconTimer>4000 && !TempSend){
-  Serial.print('F');
-  beaconTimer=millis();}
-}
 
 
 void Temperature() {
 
-if (Check=='P'){
-    Serial.print('C');
-    TempString=DallasTemp()+','+ getBatteryTemp();
+
+if (Check==TempRequest && !TempSend){
+    Serial.print(TempStart);
+    TempString=DallasTemp()+":"+CutStatus;
     TempSend=true;
     TempIndex=0;
+    DisconnectTimer=millis(); //have recieved a status request, so reset the timer for disconnect cut
    
 }
 
-if (TempSend){
+if (Sending){
   
 
   if(TempIndex<TempString.length()){  
@@ -41,35 +49,11 @@ if (TempSend){
 
   else{
     TempSend=false;
-    Serial.print('V');
+    Sending=false;
+    Serial.print(TempEnd);
   }
   
 }
 }
-   
-
- /* if (Serial.read()=='P'){
-    
-    Serial.print('C');
-    Serial.print('C');
-    //TempString=String(DallasTemp());
-    TempString="hello";
-    TempIndex=0;
-  //  delay(20);
-    while (TempIndex<TempString.length())
-    {TempChar=TempString.charAt(TempIndex);
-      Serial.print(TempChar);
-      TempIndex++;
-     // delay(10);
-    }
-  //delay(10);
-  Serial.print('V');
-  Serial.print('V');
- // Serial.print('V');
-    }
-    }
-    
-}*/
-
 
 
